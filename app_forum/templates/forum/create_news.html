@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Создание записи{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+    <div class="home__container create__container">
+        <div class="log__container flex">
+            <h2 class="log__title">Создание записи</h2>
+            <form class="create__form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="form__btn btn-reset" type="submit">Сохранить</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div class="home__container">
+        <p class="home__descr">Для создания записи авторизуйтесь, или зарегистрируйтесь</p>
+    </div>
+{% endif %}
+{% endblock %}

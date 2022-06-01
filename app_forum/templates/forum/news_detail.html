@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ news.title }}{% endblock %}
+{% block content %}
+    <div class="home__container flex">
+        <a class="header__link home__link" href="{% url 'home' %}">Назад</a>
+        {% if images %}
+            <div class="image__container flex">
+                {% for elem in images %}
+                        <img class="detail__image" src="{{ elem.image.url }}" alt="Фото записи">
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="detail__container">
+            <h3 class="detail__title">{{ news.title }}</h3>
+            <p class="detail__descr">{{ news.description }}</p>
+            <h4 class="detail__title-author">Автор: {{ news.author }}</h4>
+            <span>Дата создания: {{ news.created_at }}</span>
+        </div>
+        <form class="comment__form" method="post" action="">
+            {% csrf_token %}
+            {% if request.user.is_authenticated %}
+                <h4 class="log__title">Комментарий:</h4>
+                {{ comments_form.text_comment }}
+            {% else %}
+                {{ comments_form.as_p }}
+            {% endif %}
+            <button class="form__btn btn-reset" type="submit">Сохранить</button>
+        </form>
+        <div class="comment__form">
+            <h3 class="log__title title-reset">Комментарии:</h3>
+            {% if comments %}
+                <div class="comment__container"></div>
+                {% for elem in comments %}
+                    <div class="comment__block">
+                        <h4 class="title-reset">{{ elem.user_name }}</h4>
+                        <p class="comment">{{ elem.text_comment }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Комментариев нет.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

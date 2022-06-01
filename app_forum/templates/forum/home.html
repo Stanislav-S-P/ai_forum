@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+<div class="home__container flex">
+    {% if request.user.is_authenticated %}
+    <a class="header__link home__link" href="{% url 'add_news' %}">Добавить запись</a>
+    {% endif %}
+    {% if news %}
+        <form class="sorted__form" method="get">
+            <div class="sorted__container">
+                <h4 class="log__title">Дата создания:</span>
+                <ul class="list-reset flex" role="menu" aria-labelledby="menu2">
+                    <li><input class="form__btn sorted__input btn-reset" type="submit", name="orderby" value="По возрастанию"></li>
+                    <li><input class="form__btn btn-reset" type="submit", name="orderby" value="По убыванию"></li>
+                </ul>
+            </div>
+        </form>
+        <ul class="list-reset home__news-list flex">
+            {% for elem in news %}
+            <li class="home__item-link">
+                <a href="{% url 'news_detail' elem.id %}">
+                    <ul class="home__list list-reset">
+                        <li class="home__item"><b>Автор: {{ elem.author }}</b></li>
+                        <li class="home__item">{{ elem.created_at }}</li>
+                        <li class="home__item">{{ elem.title | truncatechars:50}}</li>
+                    </ul>
+                    <span></span> 
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2 class="home__descr">Записей нет!</h2>
+    {% endif %}
+</div>
+{% endblock %}
